@@ -1,0 +1,4 @@
+{
+    "mongoURI":"mongodb+srv://Jay123:Jay123@codemy.fopni.mongodb.net/codemy?retryWrites=true&w=majority",
+    "jwtSecret":"secretToken"
+}
