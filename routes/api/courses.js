@@ -89,50 +89,46 @@ router.post(
 // @route   PUT api/courses/:id
 // @desc    Update a course
 // @access  Private
-router.put(
-  '/:id',
+router.put('/:id', auth, async (req, res) => {
+  const { title, description, imageUrl, public, createdOn, enrolledUsers } =
+    req.body;
 
-  auth,
+  //Build Course Object
+  const courseFields = {};
+  courseFields.user = req.user.id;
+  if (title) courseFields.title = title;
+  if (description) courseFields.description = description;
+  if (imageUrl) courseFields.imageUrl = imageUrl;
+  if (public) courseFields.public = public;
+  if (createdOn) courseFields.createdAt = createdOn;
+  if (enrolledUsers) courseFields.enrolledUsers = [enrolledUsers];
 
-  async (req, res) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
+  try {
+    let course = await Course.findById(req.params.id);
+
+    if (!course) {
+      return res.status(400).json({ msg: 'Course does not exist' });
     }
 
-    const { title, description, imageUrl, public, createdOn, enrolledUsers } =
-      req.body;
-
-    //Build Course Object
-    const courseFields = {};
-    courseFields.user = req.user.id;
-    if (title) courseFields.title = title;
-    if (description) courseFields.description = description;
-    if (imageUrl) courseFields.imageUrl = imageUrl;
-    if (public) courseFields.public = public;
-    if (createdOn) courseFields.createdAt = createdOn;
-    if (enrolledUsers) courseFields.enrolledUsers = [enrolledUsers];
-
-    try {
-      let course = await Course.findOneAndUpdate(req.params.id, {
-        $set: courseFields,
-      });
-
-      if (!course) {
-        return res.status(400).json({
-          errors: [{ msg: 'Course does not exist' }],
-        });
-      }
-
-      //course = new Course(courseFields);
-      //course.save();
-      res.json(course);
-    } catch (err) {
-      console.error(err.message);
-      res.status(500).send('Server Error...');
+    //Make sure only creator can update
+    if (course.user.toString() !== req.user.id) {
+      return res.status(401).json({ msg: 'Not authorized' });
     }
-  },
-);
+
+    course = await Course.findByIdAndUpdate(
+      req.params.id,
+      { $set: courseFields },
+      { new: true },
+    );
+
+    //course = new Course(courseFields);
+    //course.save();
+    res.json(course);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error...');
+  }
+});
 
 // @route   GET api/courses
 // @desc    Get all courses
