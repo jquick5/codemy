@@ -7,7 +7,7 @@ const Landing = () => {
       <div className='dark-overlay'>
         <div className='landing-inner'>
           <h1 className='x-large'>Codemy</h1>
-          <p className='lead'>Learn coding at your own pace</p>
+          <p className='lead'>Learn coding at the speed of you!</p>
           <div className='buttons'>
             <Link to='/register' className='btn btn-primary'>
               Sign Up
