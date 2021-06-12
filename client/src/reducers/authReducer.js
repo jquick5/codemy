@@ -6,13 +6,14 @@ import {
   LOGIN_SUCCESS,
   LOGIN_FAIL,
   LOGOUT,
+  CLEAR_USERS_COURSES,
 } from '../actions/types';
 
 const initialState = {
   token: localStorage.getItem('token'),
   isAuthenticated: null,
   loading: true,
-  user: null,
+  user: [],
 };
 
 const exp = (state = initialState, action) => {
@@ -46,6 +47,7 @@ const exp = (state = initialState, action) => {
         isAuthenticated: false,
         loading: false,
       };
+
     default:
       return state;
   }
