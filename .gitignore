@@ -1,5 +1,6 @@
 node_modules/
 todo.txt
+config/default.json
 
 /.pnp
 .pnp.js
