@@ -6,6 +6,9 @@ import Login from './components/auth/Login';
 import Register from './components/auth/Register';
 import Alert from './components/layout/Alert';
 import Dashboard from './components/dashboard/Dashboard';
+import CreateCourse from './components/course-forms/CreateCourse';
+import EditCourse from './components/course-forms/EditCourse';
+import Course from './components/course/Course';
 // Redux
 import { Provider } from 'react-redux';
 import store from './store';
@@ -36,6 +39,13 @@ const App = () => {
               <Route exact path='/login' component={Login} />
               <Route exact path='/register' component={Register} />
               <PrivateRoute exact path='/dashboard' component={Dashboard} />
+              <PrivateRoute
+                exact
+                path='/create-course'
+                component={CreateCourse}
+              />
+              <PrivateRoute exact path='/edit-course' component={EditCourse} />
+              <PrivateRoute exact path='/:courseId' component={Course} />
             </Switch>
           </section>
         </Fragment>

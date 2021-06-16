@@ -18,6 +18,7 @@
     "express-validator": "^6.11.1",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.12.13",
+    "react-transition-group": "^4.4.2",
     "request": "^2.88.2",
     "uuid": "^8.3.2"
   },

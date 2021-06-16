@@ -13,6 +13,7 @@ router.get('/me', auth, async (req, res) => {
   try {
     const course = await Course.find({ user: req.user.id }).populate('user', [
       'name',
+      '_id',
     ]);
 
     if (!course) {
@@ -46,6 +47,7 @@ router.post(
         'Description must be between 10 and 50 characters',
       ).isLength({ min: 10, max: 50 }),
       check('imageUrl', 'imageUrl is required').not().isEmpty(),
+      check('imageUrl', 'Must be a valid URL').isURL(),
     ],
   ],
   async (req, res) => {
@@ -54,7 +56,7 @@ router.post(
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const { title, description, imageUrl, public, createdOn, enrolledUsers } =
+    const { title, description, imageUrl, isPublic, createdOn, enrolledUsers } =
       req.body;
 
     //Build Course Object
@@ -63,7 +65,7 @@ router.post(
     if (title) courseFields.title = title;
     if (description) courseFields.description = description;
     if (imageUrl) courseFields.imageUrl = imageUrl;
-    if (public) courseFields.public = public;
+    if (isPublic) courseFields.isPublic = isPublic;
     if (createdOn) courseFields.createdAt = createdOn;
     if (enrolledUsers) courseFields.enrolledUsers = [enrolledUsers];
 
@@ -90,7 +92,7 @@ router.post(
 // @desc    Update a course
 // @access  Private
 router.put('/:id', auth, async (req, res) => {
-  const { title, description, imageUrl, public, createdOn, enrolledUsers } =
+  const { title, description, imageUrl, isPublic, createdOn, enrolledUsers } =
     req.body;
 
   //Build Course Object
@@ -99,7 +101,7 @@ router.put('/:id', auth, async (req, res) => {
   if (title) courseFields.title = title;
   if (description) courseFields.description = description;
   if (imageUrl) courseFields.imageUrl = imageUrl;
-  if (public) courseFields.public = public;
+  if (isPublic) courseFields.isPublic = isPublic;
   if (createdOn) courseFields.createdAt = createdOn;
   if (enrolledUsers) courseFields.enrolledUsers = [enrolledUsers];
 
@@ -208,9 +210,9 @@ router.put('/enroll/:id', auth, async (req, res) => {
     const course = await Course.findById(req.params.id);
     //Check if the user already enrolled in this course
     if (
-      course.enrolledUsers.filter(
+      course.enrolledUsers.some(
         (course) => course.user.toString() === req.user.id,
-      ).length > 0
+      )
     ) {
       return res
         .status(400)
@@ -228,7 +230,7 @@ router.put('/enroll/:id', auth, async (req, res) => {
   }
 });
 
-// @route   PUT api/courses/enroll/:id
+// @route   PUT api/courses/unenroll/:id
 // @desc    Unenroll in a course
 // @access  Private
 router.put('/unenroll/:id', auth, async (req, res) => {

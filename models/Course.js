@@ -17,7 +17,7 @@ const CourseSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  public: {
+  isPublic: {
     type: Boolean,
     default: false,
   },
@@ -29,6 +29,7 @@ const CourseSchema = new mongoose.Schema({
     {
       user: {
         type: mongoose.Schema.Types.ObjectId,
+        ref: 'user',
       },
     },
   ],

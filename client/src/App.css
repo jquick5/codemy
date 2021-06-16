@@ -66,6 +66,10 @@ img {
   text-align: center;
 }
 
+.float-right {
+  float: right;
+}
+
 .text-primary {
   color: var(--primary-color);
 }
@@ -140,13 +144,45 @@ img {
   outline: none;
 }
 
+.grid-3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 1rem;
+}
+
+.grid-4 {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-gap: 2rem;
+}
+.grid-2-3 {
+  display: grid;
+  grid-template-columns: 2fr 3fr;
+  grid-gap: 2rem;
+}
+.card {
+  padding: 1rem;
+  border-radius: 10px;
+  margin: 0.7rem 0;
+  background: var(--primary-color);
+  box-shadow: 5px 8px 8px 5px rgba(0, 0, 0, 0.5),
+    0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.grid-container {
+  display: grid;
+  justify-content: space-between;
+  align-content: center;
+}
+
 .badge {
   font-size: 0.8rem;
-  padding: 0.1rem;
+  padding: 0.2rem;
   text-align: center;
   margin: 0.3rem;
   background: var(--light-color);
   color: #333;
+  border-radius: 5px;
 }
 
 .alert {
@@ -341,7 +377,7 @@ button {
 .landing-inner {
   color: #fff;
   height: 100%;
-  width: 80%;
+  width: 65%;
   margin: auto;
   display: flex;
   flex-direction: column;
@@ -574,5 +610,20 @@ button {
   .post a,
   .post button {
     padding: 0.3rem 0.4rem;
+  }
+
+  .item-enter {
+    opacity: 0;
+  }
+  .item-enter-active {
+    opacity: 1;
+    transition: opacity 1000ms ease-in;
+  }
+  .item-exit {
+    opacity: 1;
+  }
+  .item-exit-active {
+    opacity: 0;
+    transition: opacity 1000ms ease-in;
   }
 }
